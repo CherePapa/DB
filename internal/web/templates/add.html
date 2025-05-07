@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить лекарство</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c786c;
+            --secondary: #90d26d;
+            --text: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            padding: 2.5rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 2rem 0;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .medicine-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        label {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44,120,108,0.1);
+        }
+
+        .form-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-add:hover {
+            background: #245c53;
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel {
+            background: #f8fafc;
+            color: var(--text);
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+        }
+
+        .alert.error {
+            padding: 1rem;
+            background: #fff5f5;
+            color: #c53030;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-pills"></i> Добавить новое лекарство</h1>
+        
+        {{if .error}}
+        <div class="alert error">
+            <i class="fas fa-exclamation-circle"></i> {{.error}}
+        </div>
+        {{end}}
+
+        <form action="/add" method="post" class="medicine-form">
+            <div class="form-group">
+                <label for="name">
+                    <i class="fas fa-capsules"></i>
+                    Название препарата:
+                </label>
+                <input type="text" id="name" name="name" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="manufacturer">
+                    <i class="fas fa-industry"></i>
+                    Производитель:
+                </label>
+                <input type="text" id="manufacturer" name="manufacturer" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="price">
+                    <i class="fas fa-tag"></i>
+                    Цена ($):
+                </label>
+                <input type="number" id="price" name="price" step="0.01" min="0" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">
+                    <i class="fas fa-cubes"></i>
+                    Количество:
+                </label>
+                <input type="number" id="quantity" name="quantity" min="0" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="expiryDate">
+                    <i class="fas fa-calendar-times"></i>
+                    Срок годности:
+                </label>
+                <input type="date" id="expiryDate" name="expiryDate" 
+                    min="{{.currentDate}}" 
+                    required 
+                    class="form-control">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-add">
+                    <i class="fas fa-save"></i>
+                    Сохранить
+                </button>
+                <a href="/" class="btn btn-cancel">
+                    <i class="fas fa-times"></i>
+                    Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
